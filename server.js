@@ -28,20 +28,23 @@ app.ws('/', function(ws, req) {
     //ws.send(JSON.stringify(message));
 
     if (message == 'stop') {
-      ws.send('stopMoving');
+      ws.send('this.isMovingUp = false');
     }
     if (message == 87){
-      ws.send('goUp');
+      ws.send('this.isMovingUp = true');
+    };
+    if (message == 65){
+      ws.send('goLeft');
     };
 
     //console.log(expressWs.getWss().clients.length);
   });
 
   // Doesn't work - not sure why - prob because it's not a websocket server?
-//   ws.on('open', function(ws) {
-//     console.log('Connection established');
-//     ws.send('something');
-//   });
+  //   ws.on('open', function(ws) {
+  //     console.log('Connection established');
+  //     ws.send('something');
+  //   });
 });
 
 app.listen(3000);

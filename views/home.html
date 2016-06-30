@@ -3,16 +3,15 @@
     <title>loller</title>
   </head>
   <body>
-    LOLLER
 
-    <script src="https://code.jquery.com/jquery-3.0.0.min.js"
+    <!-- <script src="https://code.jquery.com/jquery-3.0.0.min.js"
             integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script> -->
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.5.0/phaser.js"></script>
-    <script src="/js/script.js"></script>
-    <script async>
+
+    <script>
 
       var socketUrl = "ws://sublime-wagon-194097.nitrousapp.com/";
       connection = new WebSocket(socketUrl);
@@ -26,26 +25,6 @@
         console.error('WebSocket Error ' + error);
       };
 
-      // Log messages from the server
-//       connection.onmessage = function (e) {
-//         console.log(e);
-//         console.log(JSON.parse(e.data));
-//       };
-
-      //       document.onkeypress = function(evt) {
-      //         evt = evt || window.event;
-      //         connection.send(evt.keyCode);
-      //       };
-      //       document.onkeyup = function(evt) {
-      //         evt = evt || window.event;
-      //         connection.send(evt.keyCode);
-      //       };
-
-//       document.onkeyup = function(evt) {
-//         evt = evt || window.event;
-//         console.log(evt.keyCode);
-//       };
-
 
       //Keep alive
       function keepAlive(){
@@ -53,10 +32,12 @@
           connection.send('.');
         }, 5000);
       }
-      //keepAlive();
+      keepAlive();
 
 
     </script>
+    <script src="/js/tank.js"></script>
+    <script src="/js/script.js"></script>
 
   </body>
 </html>

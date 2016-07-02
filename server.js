@@ -3,8 +3,6 @@ var app = express();
 var path = require("path");
 var expressWs = require('express-ws')(app);
 
-
-
 app.use(function (req, res, next) {
   req.testing = 'testing';
   return next();

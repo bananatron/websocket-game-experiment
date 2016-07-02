@@ -8,35 +8,48 @@
             integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
             crossorigin="anonymous"></script> -->
 
+    <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
+
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBm9d3jkeSRtS_WBC_Sy4D-2XG3WakalvM",
+        authDomain: "project-4296942740685711854.firebaseapp.com",
+        databaseURL: "https://project-4296942740685711854.firebaseio.com",
+        storageBucket: "project-4296942740685711854.appspot.com",
+      };
+      firebase.initializeApp(config);
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.5.0/phaser.js"></script>
 
     <script>
 
-      var socketUrl = "ws://sublime-wagon-194097.nitrousapp.com/";
-      connection = new WebSocket(socketUrl);
-
-      connection.onopen = function (con) {
-        console.log('Connection open', con);
-      };
-
-      // Log errors
-      connection.onerror = function (error) {
-        console.error('WebSocket Error ' + error);
-      };
-
-
-      //Keep alive
-      function keepAlive(){
-        setInterval(function(){
-          connection.send('.');
-        }, 5000);
-      }
-      keepAlive();
+      // var socketUrl = "ws://sublime-wagon-194097.nitrousapp.com/";
+      // connection = new WebSocket(socketUrl);
+      //
+      // connection.onopen = function (con) {
+      //   console.log('Connection open', con);
+      // };
+      //
+      // // Log errors
+      // connection.onerror = function (error) {
+      //   console.error('WebSocket Error ' + error);
+      // };
+      //
+      //
+      // //Keep alive
+      // function keepAlive(){
+      //   setInterval(function(){
+      //     connection.send('.');
+      //   }, 5000);
+      // }
+      // keepAlive();
 
 
     </script>
-    <script src="/js/tank.js"></script>
+    <script src="/js/BaseUnit.js"></script>
+    <script src="/js/RemotePlayer.js"></script>
     <script src="/js/script.js"></script>
 
   </body>

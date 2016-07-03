@@ -9,14 +9,6 @@ var compareCords = function(remotePlayer, dbSnap){
 };
 
 RemotePlayer = function (uid, game, x, y) {
-  // TODO maybe compare periodically for funniness?
-  // setInterval(() => {
-  //   firebase.database().ref('players/' + uid).once('value', function(snap){
-  //     compareCords(this, snap.val());
-  //   });
-  // }, 4000);
-
-
 
   Phaser.Sprite.call(this, game, x, y, '_blank');
 
@@ -64,12 +56,13 @@ RemotePlayer = function (uid, game, x, y) {
   this.body.drag.set(1);
   this.body.maxVelocity.setTo(600, 600);
   this.body.collideWorldBounds = true;
-  this.bringToTop();
+  //this.bringToTop();
 
   console.log('Creating RemotePlayer');
 
   // Init
   this.startListener(db, uid);
+  this.startAnimation('IDLE_DOWN');
 }
 
 RemotePlayer.prototype = Object.create(Phaser.Sprite.prototype);
@@ -87,9 +80,14 @@ RemotePlayer.prototype.startAnimation = function(action, speed){
 
 RemotePlayer.prototype.startListener = function(db, uid){
 
-  var playerListenPath = firebase.database().ref('players/' + uid);
+  var playerListenPath = firebase.database().ref(serverPath + 'players/' + uid);
 
   playerListenPath.on('value', (snap) => {
+
+    if (snap.val().x != this.x) this.x = snap.val().x;
+    if (snap.val().y != this.y) this.y = snap.val().y;
+    // ^ TODO Interpolate here instead of direct set
+
     if (snap.val().up == true) {
       this.isMovingUp = true;
     } else {
@@ -113,11 +111,13 @@ RemotePlayer.prototype.startListener = function(db, uid){
     } else {
       this.isMovingDown = false;
     }
+
   });
 }
 
 RemotePlayer.prototype.update = function() {
 
+    //this.z = -(this.game.physics.arcade.distanceToXY(this, this.x, 0));
     var walking = false;
     if (this.isMovingLeft){
         this.x -= this.moveSpeed;
@@ -141,12 +141,7 @@ RemotePlayer.prototype.update = function() {
       walking = false;
     }
 
-    // Mouse pointer flipping
-    if (game.input.activePointer.position.x > this.position.x){
-      this.scale.x = 1;
-    } else {
-      this.scale.x = -1;
-    }
+    // TODO Directional information for remote players
 
     if (walking == true) {
       if (game.input.activePointer.position.y > this.position.y){

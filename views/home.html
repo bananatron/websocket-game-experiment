@@ -1,13 +1,32 @@
 <html>
   <head>
-    <title>loller</title>
+    <title>🌔 Snapdragon</title>
+    <style>
+      * { box-sizing: border-box;}
+      html { font-family: monospace; }
+      body { background-color: rgba(255, 255, 255, 0.7); }
+      h1 {
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      .template { display: none; }
+    </style>
   </head>
   <body>
+    <h1>Snapdragon 0.0.1</h1>
 
-    <!-- <script src="https://code.jquery.com/jquery-3.0.0.min.js"
+    <button id="add-server-link">Add Server</button>
+
+    <ul class="serverlist">
+      <li class="serverEntry template"><a href="#">No servers</a></li>
+    </ul>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.0.0.min.js"
             integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0="
-            crossorigin="anonymous"></script> -->
-
+            crossorigin="anonymous"></script>
+    <script src="/js/globalHelpers.js" defer></script>
     <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase.js"></script>
 
     <script>
@@ -19,38 +38,20 @@
         storageBucket: "project-4296942740685711854.appspot.com",
       };
       firebase.initializeApp(config);
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.5.0/phaser.js"></script>
-
-    <script>
-
-      // var socketUrl = "ws://sublime-wagon-194097.nitrousapp.com/";
-      // connection = new WebSocket(socketUrl);
-      //
-      // connection.onopen = function (con) {
-      //   console.log('Connection open', con);
-      // };
-      //
-      // // Log errors
-      // connection.onerror = function (error) {
-      //   console.error('WebSocket Error ' + error);
-      // };
-      //
-      //
-      // //Keep alive
-      // function keepAlive(){
-      //   setInterval(function(){
-      //     connection.send('.');
-      //   }, 5000);
-      // }
-      // keepAlive();
 
 
     </script>
-    <script src="/js/BaseUnit.js"></script>
-    <script src="/js/RemotePlayer.js"></script>
-    <script src="/js/script.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/2.5.0/phaser.js" defer></script>
+
+
+
+
+    <script src="/js/Projectile.js" defer></script>
+    <script src="/js/GameController.js" defer></script>
+    <script src="/js/PlayerUnit.js" defer></script>
+    <script src="/js/RemotePlayer.js" defer></script>
+    <script src="/js/script.js" defer></script>
 
   </body>
 </html>

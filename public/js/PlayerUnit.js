@@ -1,77 +1,90 @@
 
-var keyboardInit = function(){
+var keyboardInit = function(playerUnit){
+
+  // MOUSE
+  var mouseDown = function(){
+    var originX = (playerUnit.x + playerUnit.width/2); // Gun origin
+    var originY = playerUnit.y+14;
+    mainGroup.add(new Projectile(game, originX, originY, game.input.activePointer.worldX, game.input.activePointer.worldY));
+  }
+  game.input.onDown.add(mouseDown, this);
+
   // UP
   upKey.onDown.add(function() {
-    db.ref('players/' + window.player.uid).update({ up: true })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ up: true })
   });
   upKey.onUp.add(function() {
-    db.ref('players/' + window.player.uid).update({ up: false })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ up: false })
   });
   wKey.onDown.add(function() {
-    db.ref('players/' + window.player.uid).update({ up: true })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ up: true })
   });
   wKey.onUp.add(function() {
-    db.ref('players/' + window.player.uid).update({ up: false })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ up: false })
   });
 
   // DOWN
   downKey.onDown.add(function() {
-    db.ref('players/' + window.player.uid).update({ down: true })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ down: true })
   });
   downKey.onUp.add(function() {
-    db.ref('players/' + window.player.uid).update({ down: false })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ down: false })
   });
   sKey.onDown.add(function() {
-    db.ref('players/' + window.player.uid).update({ down: true })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ down: true })
   });
   sKey.onUp.add(function() {
-    db.ref('players/' + window.player.uid).update({ down: false })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ down: false })
   });
 
 
   // LEFT
   leftKey.onDown.add(function() {
-    db.ref('players/' + window.player.uid).update({ left: true })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ left: true })
   });
   leftKey.onUp.add(function() {
-    db.ref('players/' + window.player.uid).update({ left: false })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ left: false })
   });
   aKey.onDown.add(function() {
-    db.ref('players/' + window.player.uid).update({ left: true })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ left: true })
   });
   aKey.onUp.add(function() {
-    db.ref('players/' + window.player.uid).update({ left: false })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ left: false })
   });
 
   // RIGHT
   rightKey.onDown.add(function() {
-    db.ref('players/' + window.player.uid).update({ right: true })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ right: true })
   });
   rightKey.onUp.add(function() {
-    db.ref('players/' + window.player.uid).update({ right: false })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ right: false })
   });
   dKey.onDown.add(function() {
-    db.ref('players/' + window.player.uid).update({ right: true })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ right: true })
   });
   dKey.onUp.add(function() {
-    db.ref('players/' + window.player.uid).update({ right: false })
+    db.ref(serverPath + 'players/' + window.player.uid).update({ right: false })
   });
+
 }
 
 
-BaseUnit = function (uid, game, x, y) {
+PlayerUnit = function (uid, game, x, y) {
+  var UPDATE_INTERVAL = 250;
+
   setInterval(() => {
-    firebase.database().ref('players/' + uid).update({
+    firebase.database().ref(serverPath + 'players/' + uid).update({
       x: this.x,
       y: this.y
     })
-  }, 1000);
+  }, UPDATE_INTERVAL);
 
   // Base units start with a blank sprite, and are filled with child sprites for each state
   // who's visiblity is toggled with 'startAnimation.'
   Phaser.Sprite.call(this, game, x, y, '_blank');
+  //game.camera.follow(this);
 
-  keyboardInit();
+  keyboardInit(this);
   this.act = {}; // Where action indexs are stored for animation lookup
 
   // Idle Down animation
@@ -116,19 +129,18 @@ BaseUnit = function (uid, game, x, y) {
   this.body.drag.set(1);
   this.body.maxVelocity.setTo(600, 600);
   this.body.collideWorldBounds = true;
-  this.bringToTop();
 
-  console.log('Creating BaseUnit');
+  console.log('Creating PlayerUnit');
 
   // Init
   this.startListener(db, uid);
 }
 
-BaseUnit.prototype = Object.create(Phaser.Sprite.prototype);
-BaseUnit.prototype.constructor = BaseUnit;
+PlayerUnit.prototype = Object.create(Phaser.Sprite.prototype);
+PlayerUnit.prototype.constructor = PlayerUnit;
 
 
-BaseUnit.prototype.startAnimation = function(action, speed){
+PlayerUnit.prototype.startAnimation = function(action, speed){
   var speed = speed || 12;
   this.children.forEach(function(child_sprite){
     child_sprite.visible = false; // Hide all other children
@@ -138,9 +150,9 @@ BaseUnit.prototype.startAnimation = function(action, speed){
 };
 
 
-BaseUnit.prototype.startListener = function(db, uid){
+PlayerUnit.prototype.startListener = function(db, uid){
 
-  var playerListenPath = firebase.database().ref('players/' + uid);
+  var playerListenPath = firebase.database().ref(serverPath + 'players/' + uid);
   console.log('starting listener');
 
   playerListenPath.on('value', (snap) => {
@@ -171,8 +183,9 @@ BaseUnit.prototype.startListener = function(db, uid){
   });
 }
 
-BaseUnit.prototype.update = function() {
+PlayerUnit.prototype.update = function() {
 
+    // this.z = this.game.physics.arcade.distanceToXY(this, this.x, 0);
     var walking = false;
     if (this.isMovingLeft){
         this.x -= this.moveSpeed;
@@ -197,28 +210,28 @@ BaseUnit.prototype.update = function() {
     }
 
     // Mouse pointer flipping
-    if (game.input.activePointer.position.x > this.position.x){
+    if (game.input.activePointer.x > game.camera.width/2){
       this.scale.x = 1;
     } else {
       this.scale.x = -1;
     }
 
     if (walking == true) {
-      if (game.input.activePointer.position.y > this.position.y){
+      if (game.input.activePointer.y > game.camera.height/2){
         this.startAnimation('WALK_UP');
       } else {
         this.startAnimation('WALK_DOWN');
       }
     } else {
-      if (game.input.activePointer.position.y < this.position.y){
+      if (game.input.activePointer.y < game.camera.height/2){
         this.startAnimation('IDLE_UP', 2);
       } else {
         this.startAnimation('IDLE_DOWN', 4);
       }
-    }
+    };
 
 
-    // TODO NOT BASE
+    // TODO
     // if (this.isRolling == true){
     //   // TODO jolt in direction you are facing without control for short period of time
     //   this.startAnimation('ROLL');

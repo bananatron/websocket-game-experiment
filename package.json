@@ -16,6 +16,7 @@
     "express-slash": "^2.0.1",
     "express-state": "latest",
     "express-ws": "^2.0.0-rc.1",
+    "firebase": "^3.1.0",
     "handlebars": "^2.0.0-alpha.4",
     "morgan": "^1.2.2",
     "ypromise": "^0.2.3"

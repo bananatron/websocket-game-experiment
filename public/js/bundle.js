@@ -102719,7 +102719,6 @@
 	    _this.body.maxVelocity.setTo(600, 600);
 	    _this.body.collideWorldBounds = true;
 	
-	    // Start update send (TODO might break because update_interval reference)
 	    var serverPath = '/gameServers/' + serverName + '/players/' + _this.uid;
 	    setInterval(function () {
 	      firebase.database().ref(serverPath).update({
@@ -102762,7 +102761,7 @@
 	    _this.children[4].animations.add('start');
 	
 	    // Init
-	    _this.startListener(db, uid);
+	    _this.startListener();
 	    return _this;
 	  }
 	
@@ -102820,7 +102819,7 @@
 	  }, {
 	    key: 'startAnimation',
 	    value: function startAnimation(action, speed) {
-	      speed = 12;
+	      speed = speed || 12;
 	      this.children.forEach(function (child_sprite) {
 	        child_sprite.visible = false; // Hide all other children
 	      });
@@ -102829,45 +102828,44 @@
 	    }
 	  }, {
 	    key: 'startListener',
-	    value: function startListener(db, uid) {
-	      console.log('starting listener');
-	      // var playerListenPath = firebase.database().ref(serverPath + 'players/' + uid);
-	      // console.log('starting listener');
-	      //
-	      // playerListenPath.on('value', (snap) => {
-	      //   if (snap.val().up == true) {
-	      //     this.isMovingUp = true;
-	      //   } else {
-	      //     this.isMovingUp = false;
-	      //   }
-	      //
-	      //   if (snap.val().right == true) {
-	      //     this.isMovingRight = true;
-	      //   } else {
-	      //     this.isMovingRight = false;
-	      //   }
-	      //
-	      //   if (snap.val().left == true) {
-	      //     this.isMovingLeft = true;
-	      //   } else {
-	      //     this.isMovingLeft = false;
-	      //   }
-	      //
-	      //   if (snap.val().down == true) {
-	      //     this.isMovingDown = true;
-	      //   } else {
-	      //     this.isMovingDown = false;
-	      //   }
-	      //
-	      // })
+	    value: function startListener() {
+	      var _this2 = this;
+	
+	      // debugger;
+	      var serverPath = 'gameServers/' + this.serverName + '/players/' + this.uid;
+	
+	      firebase.database().ref(serverPath).on('value', function (snap) {
+	        if (snap.val().up == true) {
+	          _this2.isMovingUp = true;
+	        } else {
+	          _this2.isMovingUp = false;
+	        }
+	
+	        if (snap.val().right == true) {
+	          _this2.isMovingRight = true;
+	        } else {
+	          _this2.isMovingRight = false;
+	        }
+	
+	        if (snap.val().left == true) {
+	          _this2.isMovingLeft = true;
+	        } else {
+	          _this2.isMovingLeft = false;
+	        }
+	
+	        if (snap.val().down == true) {
+	          _this2.isMovingDown = true;
+	        } else {
+	          _this2.isMovingDown = false;
+	        }
+	      });
 	    }
 	  }, {
 	    key: 'keyboardInit',
 	    value: function keyboardInit(playerUnit) {
-	
-	      var serverName = '-KLj2XdwGG4aYO3MEH1J'; // TODO STUBBED
+	      //const serverName = playerUnit.serverName
 	      var db = firebase.database(); //TODO use instance variable probably
-	      var serverPath = '/gameServers/' + serverName + '/players/' + this.uid;
+	      var serverPath = '/gameServers/' + this.serverName + '/players/' + this.uid;
 	
 	      // MOUSE
 	      var mouseDown = function mouseDown() {

@@ -5,7 +5,7 @@ export default class extends Phaser.Sprite {
 
   constructor (game, x, y, asset, uid, serverName) {
     const db = firebase.database()
-    const UPDATE_INTERVAL = 4000
+    const UPDATE_INTERVAL = 1000
 
     super(game, x, y, asset)
     console.log('Creating LocalPlayer')

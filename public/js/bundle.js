@@ -102695,7 +102695,7 @@
 	    _classCallCheck(this, _class);
 	
 	    var db = firebase.database();
-	    var UPDATE_INTERVAL = 4000;
+	    var UPDATE_INTERVAL = 1000;
 	
 	    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(_class).call(this, game, x, y, asset));
 	
